@@ -1,5 +1,6 @@
 dist: xenial
 language: cpp
+<<<<<<< HEAD
 os:
   - linux
   - osx
@@ -9,6 +10,10 @@ compiler:
 osx_image: xcode8.3
 jdk:
   - openjdk7
+=======
+os: linux
+compiler: gcc
+>>>>>>> 0b76f875f... Fix build on Apple Silicon Mac (#219)
 cache:
   - ccache
   - apt
@@ -40,23 +45,16 @@ env:
   - JOB_NAME=encrypted_env # 16-18 minutes
 
 matrix:
-  exclude:
-  - os: osx
-    env: TEST_GROUP=1
-  - os: osx
-    env: TEST_GROUP=2
-  - os: osx
-    env: TEST_GROUP=3
-  - os: osx
-    env: TEST_GROUP=4
-  - os: osx
-    env: TEST_GROUP=platform_dependent
-  - os : linux
-    compiler: clang
-  - os: osx
-    compiler: gcc
-  - os: osx
-    env: JOB_NAME=encrypted_env
+  include:
+    - os: linux
+      arch: arm64-graviton2
+      virt: vm
+      env: TEST_GROUP=platform_dependent
+    - os: osx
+      os_image: xcode12.2
+      compailer: clang
+      env: TEST_GROUP=platform_dependent
+
 
 # https://docs.travis-ci.com/user/caching/#ccache-cache
 install:
