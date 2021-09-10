@@ -10,6 +10,9 @@
 
 #pragma once
 
+#include <cstdint>
+#include <string>
+
 namespace rocksdb {
 namespace cassandra {
 namespace {

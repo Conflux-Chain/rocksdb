@@ -5,6 +5,8 @@
 //
 #pragma once
 
+#include <string>
+
 #ifdef FAILED
 #undef FAILED
 #endif

@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <stdint.h>
 #include <climits>
+#include <cstdint>
 #include <vector>
 
 namespace rocksdb {

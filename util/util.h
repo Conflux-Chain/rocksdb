@@ -5,6 +5,12 @@
 
 #pragma once
 
+// For testing purposes
+#if ROCKSDB_NAMESPACE == 42
+#undef ROCKSDB_NAMESPACE
+#endif
+
+// Normal logic
 #ifndef FALLTHROUGH_INTENDED
 #if defined(__clang__)
 #define FALLTHROUGH_INTENDED [[clang::fallthrough]]

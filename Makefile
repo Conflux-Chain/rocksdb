@@ -709,7 +709,7 @@ endif  # PLATFORM_SHARED_EXT
 .PHONY: blackbox_crash_test check clean coverage crash_test ldb_tests package \
 	release tags tags0 valgrind_check whitebox_crash_test format static_lib shared_lib all \
 	dbg rocksdbjavastatic rocksdbjava install install-static install-shared uninstall \
-	analyze tools tools_lib \
+	analyze tools tools_lib check-headers \
 	blackbox_crash_test_with_atomic_flush whitebox_crash_test_with_atomic_flush
 
 
