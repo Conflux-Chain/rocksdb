@@ -109,7 +109,6 @@ Status DBImpl::MultiBatchWriteImpl(const WriteOptions& write_options,
         write_thread_.UpdateLastSequence(versions_->LastSequence()) + 1;
     size_t total_count = 0;
     size_t total_byte_size = 0;
-    size_t valid_batches = 0;
     auto stats = default_cf_internal_stats_;
     if (writer.status.ok()) {
       SequenceNumber next_sequence = current_sequence;
@@ -121,7 +120,6 @@ Status DBImpl::MultiBatchWriteImpl(const WriteOptions& write_options,
             next_sequence += count;
             total_count += count;
           }
-          valid_batches += 1;
           total_byte_size = WriteBatchInternal::AppendedByteSize(
               total_byte_size, WriteBatchInternal::ByteSize(w->batches));
         }

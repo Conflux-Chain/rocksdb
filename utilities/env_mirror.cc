@@ -27,13 +27,10 @@ class SequentialFileMirror : public SequentialFile {
     if (as == Status::OK()) {
       char* bscratch = new char[n];
       Slice bslice;
-      size_t off = 0;
       size_t left = aslice.size();
       while (left) {
         Status bs = b_->Read(left, &bslice, bscratch);
         assert(as == bs);
-        assert(memcmp(bscratch, scratch + off, bslice.size()) == 0);
-        off += bslice.size();
         left -= bslice.size();
       }
       delete[] bscratch;
