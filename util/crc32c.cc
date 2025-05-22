@@ -340,7 +340,7 @@ static inline void Slow_CRC32(uint64_t* l, uint8_t const **p) {
   table0_[c >> 24];
 }
 
-static inline void Fast_CRC32(uint64_t* l, uint8_t const **p) {
+[[maybe_unused]] static inline void Fast_CRC32(uint64_t* l, uint8_t const **p) {
 #ifndef HAVE_SSE42
   Slow_CRC32(l, p);
 #elif defined(__LP64__) || defined(_WIN64)

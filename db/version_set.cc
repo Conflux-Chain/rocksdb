@@ -4217,7 +4217,6 @@ Status VersionSet::ReadAndRecover(
   Status s;
   Slice record;
   std::string scratch;
-  size_t recovered_edits = 0;
   while (reader->ReadRecord(&record, &scratch) && s.ok()) {
     VersionEdit edit;
     s = edit.DecodeFrom(record);
@@ -4242,7 +4241,6 @@ Status VersionSet::ReadAndRecover(
           if (!s.ok()) {
             break;
           }
-          recovered_edits++;
         }
         if (!s.ok()) {
           break;
@@ -4257,7 +4255,6 @@ Status VersionSet::ReadAndRecover(
           previous_log_number, have_next_file, next_file, have_last_sequence,
           last_sequence, min_log_number_to_keep, max_column_family);
       if (s.ok()) {
-        recovered_edits++;
       }
     }
   }
@@ -4265,8 +4262,6 @@ Status VersionSet::ReadAndRecover(
     // Clear the buffer if we fail to decode/apply an edit.
     read_buffer->Clear();
   }
-  TEST_SYNC_POINT_CALLBACK("VersionSet::ReadAndRecover:RecoveredEdits",
-                           &recovered_edits);
   return s;
 }
 
@@ -5498,7 +5493,6 @@ Status ReactiveVersionSet::ReadAndApply(
   uint64_t previous_log_number = 0;
   uint32_t max_column_family = 0;
   uint64_t min_log_number_to_keep = 0;
-  uint64_t applied_edits = 0;
   while (s.ok()) {
     Slice record;
     std::string scratch;
@@ -5539,7 +5533,6 @@ Status ReactiveVersionSet::ReadAndApply(
             if (!s.ok()) {
               break;
             }
-            applied_edits++;
           }
           if (!s.ok()) {
             break;
@@ -5553,9 +5546,6 @@ Status ReactiveVersionSet::ReadAndApply(
             &have_prev_log_number, &previous_log_number, &have_next_file,
             &next_file, &have_last_sequence, &last_sequence,
             &min_log_number_to_keep, &max_column_family);
-        if (s.ok()) {
-          applied_edits++;
-        }
       }
     }
     if (!s.ok()) {
@@ -5614,8 +5604,6 @@ Status ReactiveVersionSet::ReadAndApply(
       }
     }
   }
-  TEST_SYNC_POINT_CALLBACK("ReactiveVersionSet::ReadAndApply:AppliedEdits",
-                           &applied_edits);
   return s;
 }
 

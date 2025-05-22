@@ -205,7 +205,6 @@ Status Replayer::Replay() {
   WriteOptions woptions;
   ReadOptions roptions;
   Trace trace;
-  uint64_t ops = 0;
   Iterator* single_iter = nullptr;
   while (s.ok()) {
     trace.reset();
@@ -220,7 +219,6 @@ Status Replayer::Replay() {
     if (trace.type == kTraceWrite) {
       WriteBatch batch(trace.payload);
       db_->Write(woptions, &batch);
-      ops++;
     } else if (trace.type == kTraceGet) {
       uint32_t cf_id = 0;
       Slice key;
@@ -235,7 +233,6 @@ Status Replayer::Replay() {
       } else {
         db_->Get(roptions, cf_map_[cf_id], key, &value);
       }
-      ops++;
     } else if (trace.type == kTraceIteratorSeek) {
       uint32_t cf_id = 0;
       Slice key;
@@ -250,7 +247,6 @@ Status Replayer::Replay() {
         single_iter = db_->NewIterator(roptions, cf_map_[cf_id]);
       }
       single_iter->Seek(key);
-      ops++;
       delete single_iter;
     } else if (trace.type == kTraceIteratorSeekForPrev) {
       // Currently, only support to call the Seek()
@@ -267,7 +263,6 @@ Status Replayer::Replay() {
         single_iter = db_->NewIterator(roptions, cf_map_[cf_id]);
       }
       single_iter->SeekForPrev(key);
-      ops++;
       delete single_iter;
     } else if (trace.type == kTraceEnd) {
       // Do nothing for now.
