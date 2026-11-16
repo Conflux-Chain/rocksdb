@@ -130,6 +130,8 @@ class autovector {
       return &(*vect_)[index_];
     }
 
+    reference operator[](difference_type len) const { return *(*this + len); }
+
     // -- Logical Operators
     bool operator==(const self_type& other) const {
       assert(vect_ == other.vect_);
